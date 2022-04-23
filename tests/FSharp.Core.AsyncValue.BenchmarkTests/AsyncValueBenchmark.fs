@@ -39,22 +39,29 @@ type AsyncValueBenchmark () =
         allAsyncs <- prepareAsyncs 100
 
     [<Benchmark>]
-    member __.AsyncValueGetValue() = asyncValue { return 1337 } |> AsyncValue.get |> ignore
+    member __.AsyncValueGetValue() =
+        asyncValue { return 1337 } |> AsyncValue.get |> ignore
 
     [<Benchmark>]
-    member __.AsyncValueGetAsync() = asyncValue { return async { return 1337 } } |> AsyncValue.get |> ignore
+    member __.AsyncValueGetAsync() =
+        asyncValue { return! async { return 1337 } } |> AsyncValue.get |> ignore
 
     [<Benchmark>]
-    member __.AsyncReturnImmediatelly() = async { return 1337 } |> Async.RunSynchronously |> ignore
+    member __.AsyncRunSynchronously() =
+        async { return 1337 } |> Async.RunSynchronously |> ignore
 
     [<Benchmark>]
-    member __.AsyncValueCollectionAllValues() = allValues |> AsyncValue.collectParallel |> AsyncValue.get |> ignore
+    member __.AsyncValueCollectionAllValues() =
+        allValues |> AsyncValue.collectParallel |> AsyncValue.get |> ignore
 
     [<Benchmark>]
-    member __.AsyncValueCollectionAllAsync() = allAsyncValues |> AsyncValue.collectParallel |> AsyncValue.get |> ignore
+    member __.AsyncValueCollectionAllAsync() =
+        allAsyncValues |> AsyncValue.collectParallel |> AsyncValue.get |> ignore
 
     [<Benchmark>]
-    member __.AsyncCollection() = allAsyncs |> Async.Parallel |> Async.RunSynchronously |> ignore
+    member __.AsyncCollection() =
+        allAsyncs |> Async.Parallel |> Async.RunSynchronously |> ignore
 
     [<Benchmark>]
-    member __.AsyncValueCollection90Values10Asyncs() = values90Asyncs10 |> AsyncValue.collectParallel |> AsyncValue.get |> ignore
+    member __.AsyncValueCollection90Values10Asyncs() =
+        values90Asyncs10 |> AsyncValue.collectParallel |> AsyncValue.get |> ignore
