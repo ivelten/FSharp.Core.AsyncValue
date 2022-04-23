@@ -16,6 +16,7 @@ type AsyncValue<'T> =
     | Failure of error : exn
 
 [<RequireQualifiedAccess>]
+[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module AsyncValue =
     let inline isAsync (x : AsyncValue<'T>) =
         match x with
